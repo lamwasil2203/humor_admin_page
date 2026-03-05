@@ -7,7 +7,7 @@ export default function SearchInput({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>()
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [value, setValue] = useState(searchParams.get('q') ?? '')
 
   function push(val: string) {
