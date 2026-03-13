@@ -11,40 +11,26 @@ export default function NewImagePage() {
         <h1 className="text-2xl font-bold text-white">New Image</h1>
       </div>
 
-      <form action={createImage} className="bg-slate-800 rounded-xl p-6 space-y-5">
+      <form action={createImage} encType="multipart/form-data" className="bg-slate-800 rounded-xl p-6 space-y-5">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
-            URL <span className="text-rose-400">*</span>
-          </label>
-          <input
-            name="url"
-            type="url"
-            required
-            placeholder="https://..."
-            className={inputClass}
-          />
+          <label className="block text-sm font-medium text-slate-300 mb-1.5">Upload File</label>
+          <input name="file" type="file" accept="image/*" className="w-full text-sm text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer" />
+          <p className="text-xs text-slate-500 mt-1">Or enter a URL below</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-1.5">URL</label>
+          <input name="url" type="url" placeholder="https://..." className={inputClass} />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
-          <textarea
-            name="image_description"
-            rows={3}
-            placeholder="Describe the image..."
-            className={inputClass}
-          />
+          <textarea name="image_description" rows={3} placeholder="Describe the image..." className={inputClass} />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
-            Additional Context
-          </label>
-          <textarea
-            name="additional_context"
-            rows={2}
-            placeholder="Any additional context for caption generation..."
-            className={inputClass}
-          />
+          <label className="block text-sm font-medium text-slate-300 mb-1.5">Additional Context</label>
+          <textarea name="additional_context" rows={2} placeholder="Any additional context for caption generation..." className={inputClass} />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -65,18 +51,8 @@ export default function NewImagePage() {
         </div>
 
         <div className="flex gap-3 pt-2">
-          <button
-            type="submit"
-            className="px-5 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors"
-          >
-            Create Image
-          </button>
-          <Link
-            href="/admin/images"
-            className="px-5 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
-          >
-            Cancel
-          </Link>
+          <button type="submit" className="px-5 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors">Create Image</button>
+          <Link href="/admin/images" className="px-5 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors">Cancel</Link>
         </div>
       </form>
     </div>
