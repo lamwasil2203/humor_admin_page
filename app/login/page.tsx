@@ -40,13 +40,19 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-950 relative overflow-hidden">
+
+      {/* Atmospheric glows */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/[0.018] rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/3 w-64 h-64 bg-white/[0.01] rounded-full blur-2xl" />
+      </div>
 
       {/* Toast */}
       {toast && (
         <div
           style={{ transition: 'opacity 0.4s ease' }}
-          className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-lg border border-red-800/60 bg-zinc-900 px-4 py-3 text-sm text-red-400 shadow-xl ${
+          className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/90 backdrop-blur-sm px-4 py-3 text-sm text-zinc-400 shadow-2xl ${
             toastVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -71,19 +77,27 @@ function LoginForm() {
       )}
 
       {/* Card */}
-      <div className="w-full max-w-xs mx-4">
-        <div className="border border-zinc-800/60 rounded-2xl p-8">
+      <div className="relative w-full max-w-xs mx-4">
+        {/* Gradient glow behind card */}
+        <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-zinc-700/30 to-transparent pointer-events-none" />
 
-          {/* Wordmark */}
+        <div className="relative border border-zinc-800/80 rounded-2xl p-8 bg-zinc-950/80 backdrop-blur-sm">
+          {/* Gradient line accent at top of card */}
+          <div className="absolute top-0 left-12 right-12 h-px bg-gradient-to-r from-transparent via-zinc-600/60 to-transparent" />
+
+          {/* Brand mark + wordmark */}
           <div className="text-center mb-8">
-            <h1 className="text-base font-medium text-zinc-100 tracking-tight">Humor Admin</h1>
+            <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-zinc-100 mb-4 shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+              <span className="text-zinc-950 text-sm font-black tracking-tighter">H</span>
+            </div>
+            <h1 className="text-base font-semibold text-zinc-100 tracking-tight">Humor Admin</h1>
             <p className="text-zinc-500 text-sm mt-1">Sign in to continue</p>
           </div>
 
           {/* Google button */}
           <button
             onClick={signInWithGoogle}
-            className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+            className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-zinc-800 bg-zinc-900/60 px-4 py-2.5 text-sm text-zinc-300 transition-all duration-200 hover:bg-zinc-800/80 hover:text-zinc-100 hover:border-zinc-700 focus:outline-none focus-visible:ring-1 focus-visible:ring-zinc-500"
           >
             <GoogleIcon />
             Continue with Google

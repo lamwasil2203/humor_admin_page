@@ -23,7 +23,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
       <aside className="w-52 flex-shrink-0 bg-zinc-950 border-r border-zinc-800/60 flex flex-col overflow-y-auto">
-        <div className="px-5 py-5 border-b border-zinc-800/60 flex-shrink-0">
+        <div className="px-5 py-5 border-b border-zinc-800/60 flex-shrink-0 flex items-center gap-2.5">
+          <div className="w-6 h-6 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0 shadow-[0_0_12px_rgba(255,255,255,0.18)]">
+            <span className="text-zinc-950 text-[10px] font-black tracking-tighter">H</span>
+          </div>
           <span className="text-sm font-medium text-zinc-100 tracking-tight">Humor Admin</span>
         </div>
         <nav className="flex-1 px-3 py-5">

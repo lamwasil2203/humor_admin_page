@@ -55,7 +55,7 @@ export default function SearchInput({ placeholder }: { placeholder: string }) {
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg pl-9 pr-8 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
+        className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-lg pl-9 pr-8 py-2 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 focus:border-zinc-600 transition-colors duration-200"
       />
       {value && (
         <button
