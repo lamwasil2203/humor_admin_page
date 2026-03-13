@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
 const inputClass =
-  'w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm'
+  'w-full bg-zinc-800 border border-zinc-800 rounded-lg px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500 text-sm'
 
 export default async function EditImagePage({
   params,
@@ -25,8 +25,8 @@ export default async function EditImagePage({
   return (
     <div className="p-8 max-w-2xl">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Edit Image</h1>
-        <p className="text-slate-500 text-xs mt-1 font-mono">{id}</p>
+        <h1 className="text-lg font-medium text-zinc-100">Edit Image</h1>
+        <p className="text-zinc-500 text-xs mt-1 font-mono">{id}</p>
       </div>
 
       {image.url && (
@@ -34,15 +34,15 @@ export default async function EditImagePage({
         <img
           src={image.url}
           alt=""
-          className="w-full max-h-64 object-contain rounded-xl bg-slate-800 mb-6"
+          className="w-full max-h-64 object-contain rounded-xl bg-zinc-900 mb-6"
         />
       )}
 
-      <form action={updateImage} className="bg-slate-800 rounded-xl p-6 space-y-5">
+      <form action={updateImage} className="bg-zinc-900 rounded-xl p-6 space-y-5">
         <input type="hidden" name="id" value={id} />
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
             URL <span className="text-rose-400">*</span>
           </label>
           <input
@@ -55,7 +55,7 @@ export default async function EditImagePage({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">Description</label>
           <textarea
             name="image_description"
             rows={3}
@@ -65,7 +65,7 @@ export default async function EditImagePage({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
             Additional Context
           </label>
           <textarea
@@ -78,7 +78,7 @@ export default async function EditImagePage({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Visibility</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Visibility</label>
             <select
               name="is_public"
               defaultValue={image.is_public ? 'true' : 'false'}
@@ -89,7 +89,7 @@ export default async function EditImagePage({
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Common Use</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Common Use</label>
             <select
               name="is_common_use"
               defaultValue={image.is_common_use ? 'true' : 'false'}
@@ -104,13 +104,13 @@ export default async function EditImagePage({
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
-            className="px-5 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors"
+            className="px-5 py-2 bg-zinc-800 text-zinc-100 text-sm font-medium rounded-lg hover:bg-zinc-700 transition-colors"
           >
             Save Changes
           </button>
           <Link
             href="/admin/images"
-            className="px-5 py-2 bg-slate-700 text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-600 transition-colors"
+            className="px-5 py-2 bg-zinc-800 text-zinc-300 text-sm font-medium rounded-lg hover:bg-zinc-700 transition-colors"
           >
             Cancel
           </Link>

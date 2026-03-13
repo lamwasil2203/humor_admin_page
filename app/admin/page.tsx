@@ -4,46 +4,16 @@ function StatCard({
   label,
   value,
   sub,
-  accent = 'indigo',
 }: {
   label: string
   value: string | number
   sub?: string
-  accent?: 'indigo' | 'emerald' | 'amber' | 'rose' | 'sky' | 'violet'
-}) {
-  const borders = {
-    indigo: 'border-indigo-500',
-    emerald: 'border-emerald-500',
-    amber: 'border-amber-500',
-    rose: 'border-rose-500',
-    sky: 'border-sky-500',
-    violet: 'border-violet-500',
-  }
-  return (
-    <div className={`bg-slate-800 rounded-xl p-5 border-l-4 ${borders[accent]}`}>
-      <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">{label}</p>
-      <p className="text-3xl font-bold text-white">{value}</p>
-      {sub && <p className="text-slate-500 text-xs mt-1">{sub}</p>}
-    </div>
-  )
-}
-
-function BigMetric({
-  value,
-  label,
-  sub,
-  color,
-}: {
-  value: string | number
-  label: string
-  sub: string
-  color: string
 }) {
   return (
-    <div className="bg-slate-800 rounded-xl p-5 text-center">
-      <div className={`text-5xl font-black mb-1 ${color}`}>{value}</div>
-      <div className="text-slate-300 font-medium text-sm">{label}</div>
-      <div className="text-slate-500 text-xs mt-0.5">{sub}</div>
+    <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-5">
+      <p className="text-xs text-zinc-500 uppercase tracking-wider mb-3">{label}</p>
+      <p className="text-2xl font-semibold text-zinc-100">{value}</p>
+      {sub && <p className="text-xs text-zinc-600 mt-1.5">{sub}</p>}
     </div>
   )
 }
@@ -96,13 +66,7 @@ export default async function AdminDashboard() {
 
   const tc = totalCaptions ?? 0
   const tl = totalLikes ?? 0
-  const ts = totalSaves ?? 0
   const tr = totalRequests ?? 0
-
-  const humorQuotient = tc > 0 ? Math.round(((publicCaptions ?? 0) / tc) * 100) : 0
-  const featuredRate = tc > 0 ? Math.round(((featuredCaptions ?? 0) / tc) * 100) : 0
-  const avgLikes = tc > 0 ? (tl / tc).toFixed(1) : '0'
-  const collectorIndex = tl > 0 ? Math.round((ts / tl) * 100) : 0
   const captionEfficiency = tr > 0 ? (tc / tr).toFixed(2) : '—'
 
   const topCaptions = (rawTopCaptions ?? []) as unknown as CaptionRow[]
@@ -115,137 +79,101 @@ export default async function AdminDashboard() {
   const maxFlavorCount = Math.max(...flavors.map((f) => f.count), 1)
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Humor Pulse</h1>
-        <p className="text-slate-400 text-sm mt-1">Platform overview &amp; engagement analytics</p>
+    <div className="p-10 max-w-5xl">
+      {/* Header */}
+      <div className="mb-10">
+        <h1 className="text-lg font-medium text-zinc-100 tracking-tight">Dashboard</h1>
+        <p className="text-sm text-zinc-500 mt-0.5">Platform overview</p>
       </div>
 
-      {/* Core counts */}
-      <div className="grid grid-cols-4 gap-4 mb-4">
-        <StatCard label="Total Users" value={totalUsers ?? 0} accent="indigo" />
+      {/* Primary stats */}
+      <div className="grid grid-cols-4 gap-3 mb-3">
+        <StatCard label="Users" value={(totalUsers ?? 0).toLocaleString()} />
         <StatCard
           label="Images"
-          value={totalImages ?? 0}
+          value={(totalImages ?? 0).toLocaleString()}
           sub={`${publicImages ?? 0} public · ${commonUseImages ?? 0} common use`}
-          accent="sky"
         />
         <StatCard
           label="Captions"
-          value={tc}
+          value={tc.toLocaleString()}
           sub={`${publicCaptions ?? 0} public · ${featuredCaptions ?? 0} featured`}
-          accent="emerald"
         />
         <StatCard
           label="Caption Requests"
-          value={tr}
-          sub={`${captionEfficiency}× captions/request`}
-          accent="amber"
+          value={tr.toLocaleString()}
+          sub={`${captionEfficiency}× captions per request`}
         />
       </div>
 
-      {/* Engagement counts */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
-        <StatCard label="❤️ Total Likes" value={tl.toLocaleString()} accent="rose" />
-        <StatCard label="🔖 Total Saves" value={(totalSaves ?? 0).toLocaleString()} accent="violet" />
-        <StatCard label="📤 Total Shares" value={(totalShares ?? 0).toLocaleString()} accent="sky" />
-        <StatCard label="🐛 Bug Reports" value={bugReports ?? 0} accent="amber" />
+      {/* Engagement stats */}
+      <div className="grid grid-cols-4 gap-3 mb-10">
+        <StatCard label="Likes" value={tl.toLocaleString()} />
+        <StatCard label="Saves" value={(totalSaves ?? 0).toLocaleString()} />
+        <StatCard label="Shares" value={(totalShares ?? 0).toLocaleString()} />
+        <StatCard label="Bug Reports" value={(bugReports ?? 0).toLocaleString()} />
       </div>
 
-      {/* Derived metrics */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
-        <BigMetric
-          value={`${humorQuotient}%`}
-          label="Humor Quotient"
-          sub="captions made public"
-          color="text-indigo-400"
-        />
-        <BigMetric
-          value={avgLikes}
-          label="Avg Likes / Caption"
-          sub="engagement rate"
-          color="text-rose-400"
-        />
-        <BigMetric
-          value={`${featuredRate}%`}
-          label="Featured Rate"
-          sub="of all captions"
-          color="text-amber-400"
-        />
-        <BigMetric
-          value={`${collectorIndex}%`}
-          label="Collector Index"
-          sub="saves per like"
-          color="text-violet-400"
-        />
-      </div>
-
-      {/* Bottom sections */}
-      <div className="grid grid-cols-2 gap-6">
-        {/* Hall of Fame */}
-        <div className="bg-slate-800 rounded-xl p-6">
-          <h2 className="text-white font-semibold mb-4">🏆 Caption Hall of Fame</h2>
-          {topCaptions.length === 0 && (
-            <p className="text-slate-500 text-sm">No captions yet.</p>
-          )}
-          <div className="space-y-4">
-            {topCaptions.map((c, i) => {
-              const p = c.profiles
-              const author = p?.first_name
-                ? `${p.first_name} ${p.last_name ?? ''}`.trim()
-                : (p?.email ?? 'Unknown')
-              const medal =
-                i === 0
-                  ? 'text-amber-400'
-                  : i === 1
-                  ? 'text-slate-300'
-                  : i === 2
-                  ? 'text-amber-600'
-                  : 'text-slate-600'
-              return (
-                <div key={i} className="flex gap-3 items-start">
-                  <span className={`text-lg font-black w-5 flex-shrink-0 ${medal}`}>
-                    {i + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-slate-200 text-sm line-clamp-2">
-                      {c.content ?? '(no content)'}
-                    </p>
-                    <p className="text-slate-500 text-xs mt-0.5">{author}</p>
+      {/* Bottom panels */}
+      <div className="grid grid-cols-2 gap-5">
+        {/* Top Captions */}
+        <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-6">
+          <h2 className="text-sm font-medium text-zinc-300 mb-5">Top Captions</h2>
+          {topCaptions.length === 0 ? (
+            <p className="text-zinc-600 text-sm">No captions yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {topCaptions.map((c, i) => {
+                const p = c.profiles
+                const author = p?.first_name
+                  ? `${p.first_name} ${p.last_name ?? ''}`.trim()
+                  : (p?.email ?? 'Unknown')
+                return (
+                  <div key={i} className="flex gap-3 items-start">
+                    <span className="text-xs text-zinc-600 w-4 flex-shrink-0 pt-0.5 tabular-nums">
+                      {i + 1}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-zinc-300 line-clamp-2 leading-relaxed">
+                        {c.content ?? '(no content)'}
+                      </p>
+                      <p className="text-xs text-zinc-600 mt-0.5">{author}</p>
+                    </div>
+                    <span className="text-xs text-zinc-500 flex-shrink-0 tabular-nums">
+                      {c.like_count ?? 0} likes
+                    </span>
                   </div>
-                  <span className="text-rose-400 text-sm font-bold flex-shrink-0">
-                    ❤️ {c.like_count ?? 0}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* Humor Flavor DNA */}
-        <div className="bg-slate-800 rounded-xl p-6">
-          <h2 className="text-white font-semibold mb-4">🧬 Humor Flavor DNA</h2>
-          {flavors.length === 0 && (
-            <p className="text-slate-500 text-sm">No flavor data yet.</p>
+        <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-6">
+          <h2 className="text-sm font-medium text-zinc-300 mb-5">Flavor Distribution</h2>
+          {flavors.length === 0 ? (
+            <p className="text-zinc-600 text-sm">No flavor data yet.</p>
+          ) : (
+            <div className="space-y-3.5">
+              {flavors.map((f) => (
+                <div key={f.slug}>
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span className="text-zinc-400">{f.slug}</span>
+                    <span className="text-zinc-600 tabular-nums">{f.count}</span>
+                  </div>
+                  <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-1 bg-zinc-400 rounded-full"
+                      style={{
+                        width: `${Math.max((f.count / maxFlavorCount) * 100, f.count > 0 ? 3 : 0)}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
-          <div className="space-y-3">
-            {flavors.map((f) => (
-              <div key={f.slug}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-300 font-medium">{f.slug}</span>
-                  <span className="text-slate-500">{f.count} captions</span>
-                </div>
-                <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-2 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full"
-                    style={{
-                      width: `${Math.max((f.count / maxFlavorCount) * 100, f.count > 0 ? 3 : 0)}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

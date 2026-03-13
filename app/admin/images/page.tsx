@@ -43,12 +43,12 @@ export default async function ImagesPage({
     <div className="p-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Images</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-lg font-medium text-zinc-100">Images</h1>
+          <p className="text-zinc-500 text-sm mt-1">
             {q ? (
               <>
-                <span className="text-slate-300">{images.length}</span> results for{' '}
-                <span className="text-indigo-400">&ldquo;{q}&rdquo;</span>
+                <span className="text-zinc-300">{images.length}</span> results for{' '}
+                <span className="text-zinc-400">&ldquo;{q}&rdquo;</span>
               </>
             ) : (
               `${images.length} images`
@@ -59,38 +59,38 @@ export default async function ImagesPage({
           <SearchInput placeholder="Search by description or URL…" />
           <Link
             href="/admin/images/new"
-            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors whitespace-nowrap"
+            className="px-4 py-2 bg-zinc-800 text-zinc-100 text-sm font-medium rounded-lg hover:bg-zinc-700 transition-colors whitespace-nowrap"
           >
             + New Image
           </Link>
         </div>
       </div>
 
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-700">
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+            <tr className="border-b border-zinc-800">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Image
               </th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Description
               </th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Status
               </th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Captions
               </th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Created
               </th>
-              <th className="text-right text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-right text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-700">
+          <tbody className="divide-y divide-zinc-800">
             {images.map((img) => {
               const captionCount = img.captions?.[0]?.count ?? 0
               const owner = img.profiles
@@ -98,49 +98,49 @@ export default async function ImagesPage({
                 ? `${owner.first_name} ${owner.last_name ?? ''}`.trim()
                 : (owner?.email ?? '—')
               return (
-                <tr key={img.id} className="hover:bg-slate-700/30">
+                <tr key={img.id} className="hover:bg-zinc-800/30">
                   <td className="px-4 py-3">
                     {img.url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={img.url}
                         alt=""
-                        className="w-16 h-16 object-cover rounded-lg bg-slate-700"
+                        className="w-16 h-16 object-cover rounded-lg bg-zinc-800"
                       />
                     ) : (
-                      <div className="w-16 h-16 bg-slate-700 rounded-lg flex items-center justify-center text-slate-600 text-xs">
+                      <div className="w-16 h-16 bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-600 text-xs">
                         No URL
                       </div>
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <p className="text-slate-200 text-sm line-clamp-2 max-w-xs">
+                    <p className="text-zinc-200 text-sm line-clamp-2 max-w-xs">
                       {img.image_description ?? (
-                        <span className="text-slate-600">No description</span>
+                        <span className="text-zinc-600">No description</span>
                       )}
                     </p>
-                    <p className="text-slate-500 text-xs mt-0.5">{ownerName}</p>
+                    <p className="text-zinc-500 text-xs mt-0.5">{ownerName}</p>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-1">
                       <span
                         className={`inline-flex text-xs px-2 py-0.5 rounded font-medium w-fit ${
                           img.is_public
-                            ? 'bg-emerald-900/50 text-emerald-300'
-                            : 'bg-slate-700 text-slate-400'
+                            ? 'bg-zinc-800 text-zinc-300'
+                            : 'bg-zinc-800 text-zinc-500'
                         }`}
                       >
                         {img.is_public ? 'Public' : 'Private'}
                       </span>
                       {img.is_common_use && (
-                        <span className="inline-flex text-xs px-2 py-0.5 rounded font-medium bg-sky-900/50 text-sky-300 w-fit">
+                        <span className="inline-flex text-xs px-2 py-0.5 rounded font-medium bg-zinc-800 text-zinc-300 w-fit">
                           Common Use
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-300 text-sm">{captionCount}</td>
-                  <td className="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">
+                  <td className="px-4 py-3 text-zinc-300 text-sm">{captionCount}</td>
+                  <td className="px-4 py-3 text-zinc-500 text-sm whitespace-nowrap">
                     {img.created_datetime_utc
                       ? new Date(img.created_datetime_utc).toLocaleDateString()
                       : '—'}
@@ -149,7 +149,7 @@ export default async function ImagesPage({
                     <div className="flex gap-3 justify-end">
                       <Link
                         href={`/admin/images/${img.id}/edit`}
-                        className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors"
+                        className="text-zinc-400 hover:text-zinc-300 text-sm transition-colors"
                       >
                         Edit
                       </Link>
@@ -161,7 +161,7 @@ export default async function ImagesPage({
             })}
             {images.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-10 text-center text-slate-500">
+                <td colSpan={6} className="px-6 py-10 text-center text-zinc-500">
                   {q ? `No images match "${q}"` : 'No images found.'}
                 </td>
               </tr>

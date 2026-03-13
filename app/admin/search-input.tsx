@@ -36,7 +36,7 @@ export default function SearchInput({ placeholder }: { placeholder: string }) {
   return (
     <div className="relative w-72">
       <svg
-        className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
         xmlns="http://www.w3.org/2000/svg"
         width="15"
         height="15"
@@ -55,12 +55,12 @@ export default function SearchInput({ placeholder }: { placeholder: string }) {
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-8 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg pl-9 pr-8 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
       />
       {value && (
         <button
           onClick={handleClear}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
           aria-label="Clear search"
         >
           <svg

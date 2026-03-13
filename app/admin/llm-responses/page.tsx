@@ -26,53 +26,53 @@ export default async function LlmResponsesPage() {
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">LLM Responses</h1>
-        <p className="text-slate-400 text-sm mt-1">{responses.length} responses (latest 200)</p>
+        <h1 className="text-lg font-medium text-zinc-100">LLM Responses</h1>
+        <p className="text-zinc-500 text-sm mt-1">{responses.length} responses (latest 200)</p>
       </div>
 
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-700">
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+            <tr className="border-b border-zinc-800">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Response
               </th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Model</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Flavor</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">User</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Model</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Flavor</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">User</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Time (s)
               </th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Created
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-700">
+          <tbody className="divide-y divide-zinc-800">
             {responses.map((r) => (
-              <tr key={r.id} className="hover:bg-slate-700/30">
-                <td className="px-4 py-3 text-slate-300 text-sm max-w-sm">
+              <tr key={r.id} className="hover:bg-zinc-800/30">
+                <td className="px-4 py-3 text-zinc-300 text-sm max-w-sm">
                   <p className="line-clamp-2">
                     {r.llm_model_response ?? (
-                      <span className="text-slate-600">(empty)</span>
+                      <span className="text-zinc-600">(empty)</span>
                     )}
                   </p>
                 </td>
-                <td className="px-4 py-3 text-slate-400 text-sm whitespace-nowrap">
+                <td className="px-4 py-3 text-zinc-500 text-sm whitespace-nowrap">
                   {r.llm_models?.name ?? '—'}
                 </td>
                 <td className="px-4 py-3">
                   {r.humor_flavors?.slug && (
-                    <span className="text-xs px-2 py-0.5 rounded bg-indigo-900/50 text-indigo-300 font-mono">
+                    <span className="text-xs px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono">
                       {r.humor_flavors.slug}
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-slate-400 text-sm">
+                <td className="px-4 py-3 text-zinc-500 text-sm">
                   {r.profiles?.first_name ?? r.profiles?.email ?? '—'}
                 </td>
-                <td className="px-4 py-3 text-slate-400 text-sm">{r.processing_time_seconds}</td>
-                <td className="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">
+                <td className="px-4 py-3 text-zinc-500 text-sm">{r.processing_time_seconds}</td>
+                <td className="px-4 py-3 text-zinc-500 text-sm whitespace-nowrap">
                   {r.created_datetime_utc
                     ? new Date(r.created_datetime_utc).toLocaleString()
                     : '—'}
@@ -81,7 +81,7 @@ export default async function LlmResponsesPage() {
             ))}
             {responses.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-10 text-center text-slate-500">
+                <td colSpan={6} className="px-6 py-10 text-center text-zinc-500">
                   No responses found.
                 </td>
               </tr>

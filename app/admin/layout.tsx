@@ -5,8 +5,8 @@ import LogoutButton from './logout-button'
 
 function NavSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="mb-4">
-      <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-600">{label}</p>
+    <div className="mb-5">
+      <p className="px-3 mb-1.5 text-[10px] font-medium uppercase tracking-widest text-zinc-700">{label}</p>
       <div className="space-y-0.5">{children}</div>
     </div>
   )
@@ -21,12 +21,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const displayName = profile.first_name ? `${profile.first_name} ${profile.last_name ?? ''}`.trim() : (profile.email ?? user.email ?? 'Admin')
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100">
-      <aside className="w-56 flex-shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col overflow-y-auto">
-        <div className="px-5 py-4 border-b border-slate-800 flex-shrink-0">
-          <span className="font-bold text-white text-lg tracking-tight">Humor Admin</span>
+    <div className="flex h-screen bg-zinc-950 text-zinc-100">
+      <aside className="w-52 flex-shrink-0 bg-zinc-950 border-r border-zinc-800/60 flex flex-col overflow-y-auto">
+        <div className="px-5 py-5 border-b border-zinc-800/60 flex-shrink-0">
+          <span className="text-sm font-medium text-zinc-100 tracking-tight">Humor Admin</span>
         </div>
-        <nav className="flex-1 px-3 py-4">
+        <nav className="flex-1 px-3 py-5">
           <NavSection label="Overview">
             <NavLink href="/admin">Dashboard</NavLink>
           </NavSection>
@@ -56,12 +56,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <NavLink href="/admin/whitelisted-emails">Whitelisted Emails</NavLink>
           </NavSection>
         </nav>
-        <div className="px-4 py-3 border-t border-slate-800 flex-shrink-0">
-          <p className="text-xs text-slate-500 truncate mb-2">{displayName}</p>
+        <div className="px-4 py-4 border-t border-zinc-800/60 flex-shrink-0">
+          <p className="text-xs text-zinc-600 truncate mb-2">{displayName}</p>
           <LogoutButton />
         </div>
       </aside>
-      <main className="flex-1 overflow-auto">{children}</main>
+      <main className="flex-1 overflow-auto bg-zinc-950">{children}</main>
     </div>
   )
 }

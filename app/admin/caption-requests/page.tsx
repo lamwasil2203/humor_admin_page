@@ -26,31 +26,31 @@ export default async function CaptionRequestsPage() {
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Caption Requests</h1>
-        <p className="text-slate-400 text-sm mt-1">{requests.length} requests (latest 200)</p>
+        <h1 className="text-lg font-medium text-zinc-100">Caption Requests</h1>
+        <p className="text-zinc-500 text-sm mt-1">{requests.length} requests (latest 200)</p>
       </div>
 
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-700">
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">ID</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Image</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">User</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">
+            <tr className="border-b border-zinc-800">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">ID</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Image</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">User</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Created
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-700">
+          <tbody className="divide-y divide-zinc-800">
             {requests.map((r) => {
               const user = r.profiles
               const userName = user?.first_name
                 ? `${user.first_name} ${user.last_name ?? ''}`.trim()
                 : (user?.email ?? '—')
               return (
-                <tr key={r.id} className="hover:bg-slate-700/30">
-                  <td className="px-4 py-3 text-slate-500 text-sm font-mono">{r.id}</td>
+                <tr key={r.id} className="hover:bg-zinc-800/30">
+                  <td className="px-4 py-3 text-zinc-500 text-sm font-mono">{r.id}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {r.images?.url && (
@@ -58,18 +58,18 @@ export default async function CaptionRequestsPage() {
                         <img
                           src={r.images.url}
                           alt=""
-                          className="w-10 h-10 object-cover rounded bg-slate-700 flex-shrink-0"
+                          className="w-10 h-10 object-cover rounded bg-zinc-800 flex-shrink-0"
                         />
                       )}
-                      <p className="text-slate-400 text-sm line-clamp-1 max-w-xs">
+                      <p className="text-zinc-500 text-sm line-clamp-1 max-w-xs">
                         {r.images?.image_description ?? (
-                          <span className="text-slate-600">No description</span>
+                          <span className="text-zinc-600">No description</span>
                         )}
                       </p>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-400 text-sm">{userName}</td>
-                  <td className="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">
+                  <td className="px-4 py-3 text-zinc-500 text-sm">{userName}</td>
+                  <td className="px-4 py-3 text-zinc-500 text-sm whitespace-nowrap">
                     {r.created_datetime_utc
                       ? new Date(r.created_datetime_utc).toLocaleString()
                       : '—'}
@@ -79,7 +79,7 @@ export default async function CaptionRequestsPage() {
             })}
             {requests.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-6 py-10 text-center text-slate-500">
+                <td colSpan={4} className="px-6 py-10 text-center text-zinc-500">
                   No caption requests found.
                 </td>
               </tr>

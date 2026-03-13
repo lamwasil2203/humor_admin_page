@@ -26,40 +26,40 @@ export default async function LlmModelsPage() {
     <div className="p-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">LLM Models</h1>
-          <p className="text-slate-400 text-sm mt-1">{models.length} models</p>
+          <h1 className="text-lg font-medium text-zinc-100">LLM Models</h1>
+          <p className="text-zinc-500 text-sm mt-1">{models.length} models</p>
         </div>
         <Link
           href="/admin/llm-models/new"
-          className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors"
+          className="px-4 py-2 bg-zinc-800 text-zinc-100 text-sm font-medium rounded-lg hover:bg-zinc-700 transition-colors"
         >
           + New Model
         </Link>
       </div>
 
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-700">
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Name</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Provider</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Model ID</th>
-              <th className="text-left text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Temperature</th>
-              <th className="text-right text-xs text-slate-400 uppercase tracking-wider px-4 py-3">Actions</th>
+            <tr className="border-b border-zinc-800">
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Name</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Provider</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Model ID</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Temperature</th>
+              <th className="text-right text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-700">
+          <tbody className="divide-y divide-zinc-800">
             {models.map((m) => (
-              <tr key={m.id} className="hover:bg-slate-700/30">
-                <td className="px-4 py-3 text-slate-200 text-sm font-medium">{m.name}</td>
-                <td className="px-4 py-3 text-slate-400 text-sm">{m.llm_providers?.name ?? '—'}</td>
-                <td className="px-4 py-3 text-slate-500 text-xs font-mono">{m.provider_model_id}</td>
+              <tr key={m.id} className="hover:bg-zinc-800/30">
+                <td className="px-4 py-3 text-zinc-200 text-sm font-medium">{m.name}</td>
+                <td className="px-4 py-3 text-zinc-500 text-sm">{m.llm_providers?.name ?? '—'}</td>
+                <td className="px-4 py-3 text-zinc-500 text-xs font-mono">{m.provider_model_id}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`text-xs px-2 py-0.5 rounded font-medium ${
                       m.is_temperature_supported
-                        ? 'bg-emerald-900/50 text-emerald-300'
-                        : 'bg-slate-700 text-slate-500'
+                        ? 'bg-zinc-800 text-zinc-300'
+                        : 'bg-zinc-800 text-zinc-500'
                     }`}
                   >
                     {m.is_temperature_supported ? 'Yes' : 'No'}
@@ -69,7 +69,7 @@ export default async function LlmModelsPage() {
                   <div className="flex gap-3 justify-end">
                     <Link
                       href={`/admin/llm-models/${m.id}/edit`}
-                      className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors"
+                      className="text-zinc-400 hover:text-zinc-300 text-sm transition-colors"
                     >
                       Edit
                     </Link>
@@ -80,7 +80,7 @@ export default async function LlmModelsPage() {
             ))}
             {models.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-6 py-10 text-center text-slate-500">
+                <td colSpan={5} className="px-6 py-10 text-center text-zinc-500">
                   No models found.
                 </td>
               </tr>

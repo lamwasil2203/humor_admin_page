@@ -40,34 +40,24 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950">
-
-      {/* Subtle background grid */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-        }}
-      />
+    <div className="min-h-screen flex items-center justify-center bg-zinc-950">
 
       {/* Toast */}
       {toast && (
         <div
           style={{ transition: 'opacity 0.4s ease' }}
-          className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-lg bg-rose-600 px-4 py-3 text-sm font-medium text-white shadow-lg ${
+          className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-lg border border-red-800/60 bg-zinc-900 px-4 py-3 text-sm text-red-400 shadow-xl ${
             toastVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
+            width="14"
+            height="14"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2.5"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
@@ -81,26 +71,26 @@ function LoginForm() {
       )}
 
       {/* Card */}
-      <div className="relative w-full max-w-sm mx-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+      <div className="w-full max-w-xs mx-4">
+        <div className="border border-zinc-800/60 rounded-2xl p-8">
 
-          {/* Logo / wordmark */}
+          {/* Wordmark */}
           <div className="text-center mb-8">
-            <h1 className="text-xl font-bold text-white tracking-tight">Humor Project Admin</h1>
-            <p className="text-slate-400 text-sm mt-1">Sign in to access the dashboard</p>
+            <h1 className="text-base font-medium text-zinc-100 tracking-tight">Humor Admin</h1>
+            <p className="text-zinc-500 text-sm mt-1">Sign in to continue</p>
           </div>
 
           {/* Google button */}
           <button
             onClick={signInWithGoogle}
-            className="flex w-full items-center justify-center gap-3 rounded-lg bg-slate-800 border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-700 hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+            className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
           >
             <GoogleIcon />
             Continue with Google
           </button>
 
-          <p className="text-slate-600 text-xs text-center mt-6">
-            Access restricted to authorized accounts only.
+          <p className="text-zinc-700 text-xs text-center mt-6">
+            Restricted to authorized accounts only.
           </p>
         </div>
       </div>
