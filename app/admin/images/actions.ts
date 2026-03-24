@@ -41,6 +41,7 @@ export async function createImage(formData: FormData) {
     is_common_use: formData.get('is_common_use') === 'true',
     additional_context: (formData.get('additional_context') as string) || null,
     profile_id: userId,
+    created_by_user_id: userId,
   })
 
   revalidatePath('/admin/images')
@@ -48,7 +49,7 @@ export async function createImage(formData: FormData) {
 }
 
 export async function updateImage(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   const id = formData.get('id') as string
   const url = await resolveImageUrl(formData, db)
@@ -59,7 +60,7 @@ export async function updateImage(formData: FormData) {
     is_public: formData.get('is_public') === 'true',
     is_common_use: formData.get('is_common_use') === 'true',
     additional_context: (formData.get('additional_context') as string) || null,
-    modified_datetime_utc: new Date().toISOString(),
+    modified_by_user_id: userId,
   }).eq('id', id)
 
   revalidatePath('/admin/images')

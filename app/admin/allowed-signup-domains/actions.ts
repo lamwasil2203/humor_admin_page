@@ -17,25 +17,26 @@ async function assertSuperadmin() {
     .eq('id', user.id)
     .single()
   if (!profile?.is_superadmin) redirect('/login?error=unauthorized')
+  return { userId: user.id }
 }
 
 export async function createAllowedDomain(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   await db
     .from('allowed_signup_domains')
-    .insert({ apex_domain: formData.get('apex_domain') as string })
+    .insert({ apex_domain: formData.get('apex_domain') as string, created_by_user_id: userId })
   revalidatePath('/admin/allowed-signup-domains')
   redirect('/admin/allowed-signup-domains')
 }
 
 export async function updateAllowedDomain(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   const id = formData.get('id') as string
   await db
     .from('allowed_signup_domains')
-    .update({ apex_domain: formData.get('apex_domain') as string })
+    .update({ apex_domain: formData.get('apex_domain') as string, modified_by_user_id: userId })
     .eq('id', id)
   revalidatePath('/admin/allowed-signup-domains')
   redirect('/admin/allowed-signup-domains')

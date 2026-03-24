@@ -17,21 +17,22 @@ async function assertSuperadmin() {
     .eq('id', user.id)
     .single()
   if (!profile?.is_superadmin) redirect('/login?error=unauthorized')
+  return { userId: user.id }
 }
 
 export async function createLlmProvider(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
-  await db.from('llm_providers').insert({ name: formData.get('name') as string })
+  await db.from('llm_providers').insert({ name: formData.get('name') as string, created_by_user_id: userId })
   revalidatePath('/admin/llm-providers')
   redirect('/admin/llm-providers')
 }
 
 export async function updateLlmProvider(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   const id = formData.get('id') as string
-  await db.from('llm_providers').update({ name: formData.get('name') as string }).eq('id', id)
+  await db.from('llm_providers').update({ name: formData.get('name') as string, modified_by_user_id: userId }).eq('id', id)
   revalidatePath('/admin/llm-providers')
   redirect('/admin/llm-providers')
 }

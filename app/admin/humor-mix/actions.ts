@@ -11,14 +11,15 @@ async function assertSuperadmin() {
   if (!user) redirect('/login')
   const { data: profile } = await supabase.from('profiles').select('is_superadmin').eq('id', user.id).single()
   if (!profile?.is_superadmin) redirect('/login?error=unauthorized')
+  return { userId: user.id }
 }
 
 export async function updateHumorMixEntry(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   const id = formData.get('id') as string
   const captionCount = parseInt(formData.get('caption_count') as string, 10)
   if (isNaN(captionCount) || captionCount < 0) return
-  await db.from('humor_flavor_mix').update({ caption_count: captionCount }).eq('id', id)
+  await db.from('humor_flavor_mix').update({ caption_count: captionCount, modified_by_user_id: userId }).eq('id', id)
   revalidatePath('/admin/humor-mix')
 }

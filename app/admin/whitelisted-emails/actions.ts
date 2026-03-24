@@ -17,27 +17,28 @@ async function assertSuperadmin() {
     .eq('id', user.id)
     .single()
   if (!profile?.is_superadmin) redirect('/login?error=unauthorized')
+  return { userId: user.id }
 }
 
 export async function createWhitelistedEmail(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   await db
     .from('whitelist_email_addresses')
-    .insert({ email_address: formData.get('email_address') as string })
+    .insert({ email_address: formData.get('email_address') as string, created_by_user_id: userId })
   revalidatePath('/admin/whitelisted-emails')
   redirect('/admin/whitelisted-emails')
 }
 
 export async function updateWhitelistedEmail(formData: FormData) {
-  await assertSuperadmin()
+  const { userId } = await assertSuperadmin()
   const db = createAdminClient()
   const id = formData.get('id') as string
   await db
     .from('whitelist_email_addresses')
     .update({
       email_address: formData.get('email_address') as string,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: userId,
     })
     .eq('id', id)
   revalidatePath('/admin/whitelisted-emails')
