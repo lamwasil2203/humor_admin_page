@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import Link from 'next/link'
 
 export default async function HumorFlavorsPage() {
   const db = createAdminClient()
@@ -22,6 +23,7 @@ export default async function HumorFlavorsPage() {
               <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Slug</th>
               <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Description</th>
               <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">Created</th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800">
@@ -37,10 +39,18 @@ export default async function HumorFlavorsPage() {
                 <td className="px-4 py-3 text-zinc-500 text-sm whitespace-nowrap">
                   {f.created_datetime_utc ? new Date(f.created_datetime_utc).toLocaleDateString() : '—'}
                 </td>
+                <td className="px-4 py-3 text-right">
+                  <Link
+                    href={`/admin/humor-flavors/${f.id}/duplicate`}
+                    className="text-xs text-zinc-600 hover:text-zinc-300 transition-colors"
+                  >
+                    Duplicate
+                  </Link>
+                </td>
               </tr>
             ))}
             {(flavors ?? []).length === 0 && (
-              <tr><td colSpan={4} className="px-6 py-10 text-center text-zinc-500">No humor flavors found.</td></tr>
+              <tr><td colSpan={5} className="px-6 py-10 text-center text-zinc-500">No humor flavors found.</td></tr>
             )}
           </tbody>
         </table>

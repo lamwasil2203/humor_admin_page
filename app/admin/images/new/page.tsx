@@ -11,7 +11,7 @@ export default function NewImagePage() {
         <h1 className="text-lg font-medium text-zinc-100">New Image</h1>
       </div>
 
-      <form action={createImage} encType="multipart/form-data" className="bg-zinc-900 rounded-xl p-6 space-y-5">
+      <form action={createImage} className="bg-zinc-900 rounded-xl p-6 space-y-5">
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1.5">Upload File</label>
           <input name="file" type="file" accept="image/*" className="w-full text-sm text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-zinc-800 file:text-zinc-100 hover:file:bg-zinc-700 cursor-pointer" />

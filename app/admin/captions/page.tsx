@@ -12,6 +12,11 @@ type CaptionRow = {
   humor_flavors: { slug: string } | null
 }
 
+type VoteRow = {
+  vote_value: number
+  caption_id: string
+}
+
 export default async function CaptionsPage({
   searchParams,
 }: {
@@ -20,7 +25,7 @@ export default async function CaptionsPage({
   const { q } = await searchParams
   const db = createAdminClient()
 
-  let query = db
+  let captionQuery = db
     .from('captions')
     .select(
       'id, content, like_count, is_public, is_featured, created_datetime_utc, profiles(first_name, last_name, email), humor_flavors(slug)'
@@ -29,11 +34,43 @@ export default async function CaptionsPage({
     .limit(200)
 
   if (q) {
-    query = query.ilike('content', `%${q}%`)
+    captionQuery = captionQuery.ilike('content', `%${q}%`)
   }
 
-  const { data: rawCaptions } = await query
-  const captions = (rawCaptions ?? []) as unknown as CaptionRow[]
+  const [captionResult, votesResult, { count: totalCaptionCount }] = await Promise.all([
+    captionQuery,
+    db.from('caption_votes').select('vote_value, caption_id'),
+    db.from('captions').select('*', { count: 'exact', head: true }),
+  ])
+
+  const captions = (captionResult.data ?? []) as unknown as CaptionRow[]
+  const voteData = (votesResult.data ?? []) as unknown as VoteRow[]
+
+  // Aggregate rating stats
+  const totalVotes = voteData.length
+  const captionsRated = new Set(voteData.map((v) => v.caption_id)).size
+  const avgVote =
+    totalVotes > 0
+      ? (voteData.reduce((s, v) => s + (v.vote_value ?? 0), 0) / totalVotes).toFixed(1)
+      : '—'
+  const pctRated =
+    (totalCaptionCount ?? 0) > 0
+      ? Math.round((captionsRated / (totalCaptionCount ?? 1)) * 100)
+      : 0
+
+  // Vote distribution
+  const dist: Record<number, number> = {}
+  for (const v of voteData) {
+    dist[v.vote_value] = (dist[v.vote_value] ?? 0) + 1
+  }
+  const sortedVals = Object.keys(dist).map(Number).sort((a, b) => a - b)
+  const maxDist = Math.max(...Object.values(dist), 1)
+
+  // Per-caption vote count map
+  const voteCountMap = new Map<string, number>()
+  for (const v of voteData) {
+    voteCountMap.set(v.caption_id, (voteCountMap.get(v.caption_id) ?? 0) + 1)
+  }
 
   return (
     <div className="p-8">
@@ -53,6 +90,69 @@ export default async function CaptionsPage({
         </div>
         <SearchInput placeholder="Search caption text…" />
       </div>
+
+      {/* Rating Statistics */}
+      {totalVotes > 0 && (
+        <div className="mb-6">
+          <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-3 font-medium">
+            Rating Activity
+          </p>
+          <div className="grid grid-cols-4 gap-3 mb-3">
+            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/30 p-4">
+              <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2 font-medium">
+                Total Ratings
+              </p>
+              <p className="text-2xl font-bold tracking-tight bg-gradient-to-b from-zinc-100 to-zinc-500 bg-clip-text text-transparent">
+                {totalVotes.toLocaleString()}
+              </p>
+            </div>
+            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/30 p-4">
+              <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2 font-medium">
+                Captions Rated
+              </p>
+              <p className="text-2xl font-bold tracking-tight bg-gradient-to-b from-zinc-100 to-zinc-500 bg-clip-text text-transparent">
+                {captionsRated.toLocaleString()}
+              </p>
+              <p className="text-xs text-zinc-600 mt-1">{pctRated}% of all captions</p>
+            </div>
+            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/30 p-4">
+              <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2 font-medium">
+                Avg Rating
+              </p>
+              <p className="text-2xl font-bold tracking-tight bg-gradient-to-b from-zinc-100 to-zinc-500 bg-clip-text text-transparent">
+                {avgVote}
+              </p>
+            </div>
+            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/30 p-4">
+              <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-2 font-medium">
+                Distribution
+              </p>
+              {sortedVals.length === 0 ? (
+                <p className="text-zinc-700 text-xs">No data</p>
+              ) : (
+                <div className="space-y-1.5 mt-1">
+                  {sortedVals.map((val) => (
+                    <div key={val} className="flex items-center gap-2">
+                      <span className="text-[10px] text-zinc-500 w-4 text-right tabular-nums flex-shrink-0">
+                        {val}
+                      </span>
+                      <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-zinc-300 to-zinc-600 rounded-full"
+                          style={{ width: `${((dist[val] ?? 0) / maxDist) * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-[10px] text-zinc-600 tabular-nums flex-shrink-0">
+                        {dist[val]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-zinc-900 rounded-xl overflow-hidden">
         <table className="w-full">
@@ -74,6 +174,9 @@ export default async function CaptionsPage({
                 ❤️
               </th>
               <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
+                Ratings
+              </th>
+              <th className="text-left text-xs text-zinc-500 uppercase tracking-wider px-4 py-3">
                 Created
               </th>
             </tr>
@@ -84,6 +187,7 @@ export default async function CaptionsPage({
               const author = p?.first_name
                 ? `${p.first_name} ${p.last_name ?? ''}`.trim()
                 : (p?.email ?? '—')
+              const ratings = voteCountMap.get(c.id) ?? 0
               return (
                 <tr key={c.id} className="hover:bg-zinc-800/30">
                   <td className="px-4 py-3 max-w-sm">
@@ -120,6 +224,9 @@ export default async function CaptionsPage({
                   <td className="px-4 py-3 text-rose-400 text-sm font-medium">
                     {c.like_count ?? 0}
                   </td>
+                  <td className="px-4 py-3 text-zinc-400 text-sm font-medium">
+                    {ratings > 0 ? ratings : <span className="text-zinc-700">—</span>}
+                  </td>
                   <td className="px-4 py-3 text-zinc-500 text-sm whitespace-nowrap">
                     {c.created_datetime_utc
                       ? new Date(c.created_datetime_utc).toLocaleDateString()
@@ -130,7 +237,7 @@ export default async function CaptionsPage({
             })}
             {captions.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-10 text-center text-zinc-500">
+                <td colSpan={7} className="px-6 py-10 text-center text-zinc-500">
                   {q ? `No captions match "${q}"` : 'No captions found.'}
                 </td>
               </tr>
