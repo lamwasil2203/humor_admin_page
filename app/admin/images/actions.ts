@@ -1,6 +1,5 @@
 'use server'
 
-import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
@@ -14,15 +13,15 @@ async function assertSuperadmin() {
   return { userId: user.id }
 }
 
-async function resolveImageUrl(formData: FormData, db: ReturnType<typeof createAdminClient>): Promise<string | null> {
+async function resolveImageUrl(formData: FormData, storageClient: Awaited<ReturnType<typeof createClient>>): Promise<string | null> {
   const file = formData.get('file') as File | null
   if (file && file.size > 0) {
     const ext = file.name.split('.').pop() ?? 'jpg'
     const path = `${crypto.randomUUID()}.${ext}`
     const bytes = await file.arrayBuffer()
-    const { error } = await db.storage.from('images').upload(path, bytes, { contentType: file.type, upsert: false })
+    const { error } = await storageClient.storage.from('images').upload(path, bytes, { contentType: file.type, upsert: false })
     if (error) throw new Error(`Upload failed: ${error.message}`)
-    const { data: { publicUrl } } = db.storage.from('images').getPublicUrl(path)
+    const { data: { publicUrl } } = storageClient.storage.from('images').getPublicUrl(path)
     return publicUrl
   }
   const url = (formData.get('url') as string)?.trim()
@@ -31,10 +30,10 @@ async function resolveImageUrl(formData: FormData, db: ReturnType<typeof createA
 
 export async function createImage(formData: FormData) {
   const { userId } = await assertSuperadmin()
-  const db = createAdminClient()
-  const url = await resolveImageUrl(formData, db)
+  const supabase = await createClient()
+  const url = await resolveImageUrl(formData, supabase)
 
-  await db.from('images').insert({
+  await supabase.from('images').insert({
     url,
     image_description: (formData.get('image_description') as string) || null,
     is_public: formData.get('is_public') === 'true',
@@ -50,11 +49,11 @@ export async function createImage(formData: FormData) {
 
 export async function updateImage(formData: FormData) {
   const { userId } = await assertSuperadmin()
-  const db = createAdminClient()
+  const supabase = await createClient()
   const id = formData.get('id') as string
-  const url = await resolveImageUrl(formData, db)
+  const url = await resolveImageUrl(formData, supabase)
 
-  await db.from('images').update({
+  await supabase.from('images').update({
     url: url ?? undefined,
     image_description: (formData.get('image_description') as string) || null,
     is_public: formData.get('is_public') === 'true',
@@ -69,8 +68,8 @@ export async function updateImage(formData: FormData) {
 
 export async function deleteImage(formData: FormData) {
   await assertSuperadmin()
-  const db = createAdminClient()
+  const supabase = await createClient()
   const id = formData.get('id') as string
-  await db.from('images').delete().eq('id', id)
+  await supabase.from('images').delete().eq('id', id)
   revalidatePath('/admin/images')
 }

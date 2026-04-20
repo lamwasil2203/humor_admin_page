@@ -16,7 +16,7 @@ export default async function LlmResponsesPage() {
   const { data: rawResponses } = await db
     .from('llm_model_responses')
     .select(
-      'id, llm_model_response, processing_time_seconds, llm_temperature, created_datetime_utc, llm_models(name), profiles(email, first_name), humor_flavors(slug)'
+      'id, llm_model_response, processing_time_seconds, llm_temperature, created_datetime_utc, llm_models(name), profiles!profile_id(email, first_name), humor_flavors(slug)'
     )
     .order('created_datetime_utc', { ascending: false })
     .limit(200)

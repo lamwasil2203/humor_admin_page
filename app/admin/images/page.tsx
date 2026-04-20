@@ -25,7 +25,7 @@ export default async function ImagesPage({
   let query = db
     .from('images')
     .select(
-      'id, url, image_description, is_public, is_common_use, created_datetime_utc, captions(count), profiles(email, first_name, last_name)'
+      'id, url, image_description, is_public, is_common_use, created_datetime_utc, captions(count), profiles!profile_id(email, first_name, last_name)'
     )
     .order('created_datetime_utc', { ascending: false })
     .limit(200)

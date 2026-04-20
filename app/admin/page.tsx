@@ -39,7 +39,7 @@ export default async function AdminDashboard() {
     { count: publicCaptions },
     { count: featuredCaptions },
     { count: totalRequests },
-    { count: totalLikes },
+    { count: totalRatings },
     { count: totalSaves },
     { count: totalShares },
     { count: bugReports },
@@ -54,20 +54,20 @@ export default async function AdminDashboard() {
     db.from('captions').select('*', { count: 'exact', head: true }).eq('is_public', true),
     db.from('captions').select('*', { count: 'exact', head: true }).eq('is_featured', true),
     db.from('caption_requests').select('*', { count: 'exact', head: true }),
-    db.from('caption_likes').select('*', { count: 'exact', head: true }),
-    db.from('caption_saved').select('*', { count: 'exact', head: true }),
+    db.from('caption_votes').select('*', { count: 'exact', head: true }),
+    db.from('caption_saves').select('*', { count: 'exact', head: true }),
     db.from('shares').select('*', { count: 'exact', head: true }),
     db.from('bug_reports').select('*', { count: 'exact', head: true }),
     db
       .from('captions')
-      .select('content, like_count, profiles(first_name, last_name, email)')
+      .select('content, like_count, profiles!profile_id(first_name, last_name, email)')
       .order('like_count', { ascending: false })
       .limit(5),
     db.from('humor_flavors').select('slug, captions(count)'),
   ])
 
   const tc = totalCaptions ?? 0
-  const tl = totalLikes ?? 0
+  const tl = totalRatings ?? 0
   const tr = totalRequests ?? 0
   const captionEfficiency = tr > 0 ? (tc / tr).toFixed(2) : '—'
 
@@ -122,7 +122,7 @@ export default async function AdminDashboard() {
 
         {/* Engagement stats */}
         <div className="grid grid-cols-4 gap-3 mb-10">
-          <StatCard label="Likes" value={tl.toLocaleString()} />
+          <StatCard label="Ratings" value={tl.toLocaleString()} />
           <StatCard label="Saves" value={(totalSaves ?? 0).toLocaleString()} />
           <StatCard label="Shares" value={(totalShares ?? 0).toLocaleString()} />
           <StatCard label="Bug Reports" value={(bugReports ?? 0).toLocaleString()} />

@@ -16,7 +16,7 @@ export default async function CaptionRequestsPage() {
   const { data: rawRequests } = await db
     .from('caption_requests')
     .select(
-      'id, created_datetime_utc, profiles(email, first_name, last_name), images(url, image_description)'
+      'id, created_datetime_utc, profiles!profile_id(email, first_name, last_name), images(url, image_description)'
     )
     .order('created_datetime_utc', { ascending: false })
     .limit(200)

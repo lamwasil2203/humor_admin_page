@@ -13,7 +13,7 @@ export default async function LlmPromptChainsPage() {
   const db = createAdminClient()
   const { data: rawChains } = await db
     .from('llm_prompt_chains')
-    .select('id, created_datetime_utc, caption_requests(id, profiles(email, first_name))')
+    .select('id, created_datetime_utc, caption_requests(id, profiles!profile_id(email, first_name))')
     .order('created_datetime_utc', { ascending: false })
     .limit(200)
 

@@ -10,6 +10,7 @@ type CaptionRow = {
   created_datetime_utc: string | null
   profiles: { first_name: string | null; last_name: string | null; email: string | null } | null
   humor_flavors: { slug: string } | null
+  caption_votes: Array<{ count: number }>
 }
 
 type VoteRow = {
@@ -28,7 +29,7 @@ export default async function CaptionsPage({
   let captionQuery = db
     .from('captions')
     .select(
-      'id, content, like_count, is_public, is_featured, created_datetime_utc, profiles(first_name, last_name, email), humor_flavors(slug)'
+      'id, content, like_count, is_public, is_featured, created_datetime_utc, profiles!profile_id(first_name, last_name, email), humor_flavors(slug), caption_votes(count)'
     )
     .order('created_datetime_utc', { ascending: false })
     .limit(200)
@@ -39,7 +40,7 @@ export default async function CaptionsPage({
 
   const [captionResult, votesResult, { count: totalCaptionCount }] = await Promise.all([
     captionQuery,
-    db.from('caption_votes').select('vote_value, caption_id'),
+    db.from('caption_votes').select('vote_value, caption_id').limit(50000),
     db.from('captions').select('*', { count: 'exact', head: true }),
   ])
 
@@ -187,7 +188,7 @@ export default async function CaptionsPage({
               const author = p?.first_name
                 ? `${p.first_name} ${p.last_name ?? ''}`.trim()
                 : (p?.email ?? '—')
-              const ratings = voteCountMap.get(c.id) ?? 0
+              const ratings = c.caption_votes?.[0]?.count ?? 0
               return (
                 <tr key={c.id} className="hover:bg-zinc-800/30">
                   <td className="px-4 py-3 max-w-sm">
